@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+
+	var SECONDS = 5;
+
+	function c_to_f(temp) {
+		return temp * 9.0 / 5.0 + 32.0
+	}
+
+	(function poll() {
+		setTimeout(
+			function() {
+				$.ajax({
+					type : 'GET',
+					dataType : 'json',
+					url : '/temperature',
+					success : function(data) {
+						$("#external").html(data.external + " C - " + c_to_f(data.external) + " F");
+						$("#internal").html(data.internal + " C - " + c_to_f(data.internal) + " F");
+					},
+					complete : poll
+			});
+		}, SECONDS * 1000);
+	})();
+</script>
+
+</head>
+<body>
+
+<b>External:</b> <div id="external"></div>
+<b>Internal:</b> <div id="internal"></div>
+</body>
+</html>
